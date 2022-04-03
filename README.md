@@ -24,7 +24,7 @@ public class HelloServlet extends HttpServlet {
 2. 개발자는 Request 객체에서 HTTP 요청 정보를 꺼내서 사용
 3. 개발자는 Response 객체에 HTTP 응답 정보를 입력
 4. WAS는 Response 객체의 내용으로 HTTP 응답 정보를 생성
-<br>
+<br><br>
 
 ## 서블릿 컨테이너
 - 톰캣처럼 서블릿을 지원하는 WAS를 서블릿 컨테이너라고 함
@@ -42,7 +42,7 @@ public class HelloServlet extends HttpServlet {
 - 개발자가 멀티 쓰레드 관련 코드를 신경쓰지 않아도 된다.
 - 개발자는 마치 싱글 쓰레드처럼 편리하게 개발한다.
 - 단, 싱글톤 객체를 주의해서 사용해야 한다.
-<br>
+<br><br>
 
 ## 스프링 부트 서블릿 환경 구성
 **@ServletComponentScan**를 main메소드가 있는 클래스에 붙이면 된다.
@@ -74,7 +74,7 @@ public class HelloServlet extends HttpServlet {
 }
 ```
 **주의: name, urlPatterns이 중복되면 컴파일 에러가 발생한다.**
-<br>
+<br><br>
 
 ## 서블릿 컨테이너 동작 방식
 ### 내장 톰캣 서버 생성
@@ -83,7 +83,7 @@ public class HelloServlet extends HttpServlet {
 
 ### 웹 애플리케이션 서버의 요청 응답 구조
 ![img1 daumcdn](https://user-images.githubusercontent.com/61576254/161427405-ab7affc7-e3d6-49d7-a929-c9f7ee618c4d.png)
-<br>
+<br><br>
 
 ## HttpServletRequest
 **역할**
@@ -95,7 +95,7 @@ public class HelloServlet extends HttpServlet {
     - 조회: request.getAttribute(name)
 2. 세션 관리 기능
     - request.getSession(create: true) 
-<br>
+<br><br>
 
 ## HTTP 요청 데이터
 **서버로 데이터를 전달하는 방법은 3가지가 있다.**
