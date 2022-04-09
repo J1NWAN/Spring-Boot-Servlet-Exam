@@ -106,3 +106,117 @@ public class HelloServlet extends HttpServlet {
     - HTML form 태그 사용
 3. HTTP message Body
     - HTTP API에서 주로 사용(JSON, XML TEXT)
+<br><br>
+
+# Servlet 회원 관리 요구사항 만들기
+## 회원 관리 웹 애플리케이션 요구사항
+**회원 정보**
+- 이름: username
+- 나이: age
+
+``` java
+@Getter @Setter
+public class Member {
+    private Long id;
+    private String username;
+    private int age;
+
+    public Member() { }
+
+    public Member(String username, int age) {
+        this.username = username;
+        this.age = age;
+    }
+}
+```
+<br>
+
+**기능 요구사항**
+- 회원 저장
+- 회원 목록 조회
+
+```java
+public class MemberRepository {
+
+    private Map<Long, Member> store = new HashMap<>();
+    private static long sequence = 0L;
+
+    // 싱글톤 사용
+    private static final MemberRepository instance = new MemberRepository();
+
+    public static MemberRepository getInstance() {
+        return instance;
+    }
+
+    private MemberRepository() { }
+
+    public Member save(Member member) {
+        member.setId(++sequence);
+        store.put(member.getId(), member);
+        return member;
+    }
+
+    public Member findById(Long id) {
+        return store.get(id);
+    }
+
+    public List<Member> findAll() {
+        // store를 보호하기 위한 방법
+        return new ArrayList<>(store.values());
+    }
+
+    public void clearStore() {
+        store.clear();
+    }
+}
+```
+<br>
+
+JUnit 프레임워크를 통해 테스트 코드 작성
+
+``` java
+class MemberRepositoryTest {
+
+    MemberRepository memberRepository = MemberRepository.getInstance();
+
+    @AfterEach
+    void afterEach() {
+        memberRepository.clearStore();
+    }
+
+    @Test
+    public void save() throws Exception {
+        //given
+        Member member = new Member("hello", 20);
+
+        //when
+        Member savedMember = memberRepository.save(member);
+
+        //then
+        Member findMember = memberRepository.findById(savedMember.getId());
+        assertThat(findMember).isEqualTo(savedMember);
+    }
+
+    @Test
+    public void findAll() throws Exception {
+        //given
+        Member member1 = new Member("member1", 20);
+        Member member2 = new Member("member2", 30);
+
+        //when
+        Member savedMember1 = memberRepository.save(member1);
+        Member savedMember2 = memberRepository.save(member2);
+
+        List<Member> result = memberRepository.findAll();
+
+        //then
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).contains(member1, member2);
+    }
+}
+```
+<br>
+**@AfterEach를 사용하는 이유는 각 테스트 실행 결과로 저장된 데이터가 남아 다른 테스트에 영향을 끼치지 않기 위해서 데이터 삭제를 진행한다. 테스트 일관성을 지키기 위해서다.**
+<br>
+
+## JSP로 회원관리 웹 애플리케이션 만들기
