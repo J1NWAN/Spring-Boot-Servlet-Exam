@@ -216,7 +216,54 @@ class MemberRepositoryTest {
 }
 ```
 <br>
+
 **@AfterEach를 사용하는 이유는 각 테스트 실행 결과로 저장된 데이터가 남아 다른 테스트에 영향을 끼치지 않기 위해서 데이터 삭제를 진행한다. 테스트 일관성을 지키기 위해서다.**
-<br>
+<br><br>
 
 ## JSP로 회원관리 웹 애플리케이션 만들기
+
+**.gradle에 의존성을 추가한다.**
+``` xml
+implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+implementation 'javax.servlet:jstl'
+```
+
+회원 목록 JSP를 생성
+``` jsp
+<%@ page import="hello.servlet.domain.member.MemberRepository" %>
+<%@ page import="hello.servlet.domain.member.Member" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    MemberRepository memberRepository = MemberRepository.getInstance();
+    List<Member> members = memberRepository.findAll();
+
+%>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<a href="/index.html">메인</a>
+<table>
+    <thead>
+    <th>id</th>
+    <th>username</th>
+    <th>age</th>
+    </thead>
+    <tbody>
+    <%
+        for (Member member : members) {
+            out.write(" <tr>"
+                    + "<td>" + member.getId() + "</td>"
+                    + "<td>" + member.getUsername() + "</td>"
+                    + "<td>" + member.getAge() + "</td>"
+                    + "</tr>");
+        }
+    %>
+    </tbody>
+</table>
+
+</body>
+</html>
+```
